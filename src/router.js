@@ -3,6 +3,8 @@ import Router from "vue-router";
 import AppHeader from "./layout/AppHeader";
 import AppFooter from "./layout/AppFooter";
 import Components from "./views/Components.vue";
+import News from "./views/News.vue";
+import NewsPage from "./views/NewsPage.vue";
 import Landing from "./views/Landing.vue";
 import Login from "./views/Login.vue";
 import Contact from "./views/Contact.vue";
@@ -46,6 +48,24 @@ export default new Router({
       components: {
         header: AppHeader,
         default: Profile,
+        footer: AppFooter
+      }
+    },
+    {
+      path: "/news",
+      name: "news",
+      components: {
+        header: AppHeader,
+        default: News,
+        footer: AppFooter
+      }
+    },
+    {
+      path: "/news/:id",
+      name: "news-page",
+      components: {
+        header: AppHeader,
+        default: NewsPage,
         footer: AppFooter
       }
     }
