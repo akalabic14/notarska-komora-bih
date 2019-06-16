@@ -3,6 +3,7 @@ const bs = require('body-parser')
 const app = express()
 const {routes} = require('./router')
 const mongoose = require('mongoose')
+const check_auth = require('./controllers/check_auth')
 
 app.use(express.static('dist'))
 app.use(express.static('public'))
@@ -13,7 +14,11 @@ app.use(bs.text({type: '*/*'}))
 app.use(bs.json())
 
 routes.forEach((route) => {
-    app[ route.method ](route.path, require('./controllers/' + route.controller))
+    if (route.requires_auth) {
+        app[ route.method ](route.path, check_auth, require('./controllers/' + route.controller))
+    } else {
+        app[ route.method ](route.path, require('./controllers/' + route.controller))
+    }
 })
 
 mongoose.connect(`mongodb+srv://web_tehnologije:web_tehnologije@webtehnologije-9u8hn.mongodb.net/test?retryWrites=true&w=majority`, { useNewUrlParser: true })

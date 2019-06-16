@@ -41,6 +41,10 @@ export default {
       default: "default",
       description: "Alert type"
     },
+    visible: {
+      type: Boolean,
+      default: true
+    },
     icon: {
       type: String,
       default: "",
@@ -51,11 +55,6 @@ export default {
       default: false,
       description: "Whether alert is closes when clicking"
     }
-  },
-  data() {
-    return {
-      visible: true
-    };
   },
   methods: {
     dismissAlert() {

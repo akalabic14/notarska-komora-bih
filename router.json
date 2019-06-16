@@ -1,5 +1,20 @@
 {
     "routes": [
-        
+        {
+            "path": "/login",
+            "method": "post",
+            "controller": "login.js"
+        },
+        {
+            "path": "/logout",
+            "method": "post",
+            "controller": "logout.js"
+        },
+        {
+            "path": "/get-user",
+            "method": "post",
+            "controller": "get-user.js",
+            "requires_auth": "true"
+        }
     ]
 }

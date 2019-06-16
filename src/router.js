@@ -90,7 +90,8 @@ export default new Router({
         header: DashHeader,
         default: Components,
         footer: AppFooter
-      }
+      },
+      meta: { requiresAuth: true }
     },
     {
       path: "/user",
@@ -99,7 +100,8 @@ export default new Router({
         header: DashHeader,
         default: User,
         footer: AppFooter
-      }
+      },
+      meta: { requiresAuth: true }
     },
     {
       path: "/users",
@@ -108,7 +110,8 @@ export default new Router({
         header: DashHeader,
         default: UsersTable,
         footer: AppFooter
-      }
+      },
+      meta: { requiresAuth: true }
     },
     {
       path: "/add-news",
@@ -117,7 +120,8 @@ export default new Router({
         header: DashHeader,
         default: AddNews,
         footer: AppFooter
-      }
+      },
+      meta: { requiresAuth: true }
     }
   ],
   scrollBehavior: to => {

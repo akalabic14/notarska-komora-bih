@@ -1,5 +1,8 @@
 <template>
     <section class="section section-shaped section-lg my-0">
+        <base-alert type="danger" icon="ni ni-support-16" dismissible :visible="error.show">
+            <span slot="text"><strong>Greška!</strong> {{error.message}}!</span>
+        </base-alert>
         <div class="shape shape-style-1 bg-gradient-default">
             <span></span>
             <span></span>
@@ -20,14 +23,16 @@
                         <base-input alternative
                                     class="mb-3"
                                     placeholder="Email"
-                                    addon-left-icon="ni ni-email-83">
+                                    addon-left-icon="ni ni-email-83"
+                                    v-model="username">
                         </base-input>
                         <base-input alternative
                                     type="password"
                                     placeholder="Šifra"
-                                    addon-left-icon="ni ni-lock-circle-open">
+                                    addon-left-icon="ni ni-lock-circle-open"
+                                    v-model="password">
                         </base-input>
-                        <base-button type="default" round block size="lg">
+                        <base-button type="default" round block size="lg" @click="login">
                             Prijavi se
                         </base-button>
                     </card>
@@ -44,7 +49,44 @@
     </section>
 </template>
 <script>
-export default {};
+export default {
+    data() {
+        return {
+            username: '',
+            password: '',
+            error: {
+                show: false,
+                message: ''
+            },
+            defaultError: {
+                show: false,
+                message: ''
+            }
+        }
+    },
+    methods: {
+        login () {
+            this.$axios.post('/login', {username: this.username, password: this.password})
+            .then(res => {
+                if (res.data.error) {
+                    this.pokaziError (res.data.error)
+                } else {
+                    this.$router.push('/dashboard')
+                }
+            })
+            .catch(err => {
+                this.pokaziError(err.toString())
+            })
+        },
+        pokaziError (message) {
+            this.error.message = message;
+            this.error.show = true;
+            setTimeout(() => {
+                this.error = Object.assign({}, this.defaultError)
+            }, 3000)
+        }
+    },
+};
 </script>
 <style>
 </style>

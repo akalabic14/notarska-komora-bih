@@ -15,13 +15,13 @@
             </div>
             <ul class="navbar-nav align-items-lg-center ml-lg-auto">
                 <li class="nav-item d-none d-lg-block ml-lg-4">
-                    <router-link to="/login" 
+                    <div @click="logout" 
                        class="btn btn-neutral btn-icon">
-                <span class="btn-inner--icon">
-                  <i class="fa fa-cloud-download mr-2"></i>
-                </span>
+                        <span class="btn-inner--icon">
+                        <i class="fa fa-cloud-download mr-2"></i>
+                        </span>
                         <span class="nav-link-inner--text">Izloguj se</span>
-                    </router-link>
+                    </div>
                 </li>
             </ul>
         </base-nav>
@@ -37,6 +37,17 @@ export default {
     BaseNav,
     CloseButton,
     BaseDropdown
+  },
+  methods: {
+      logout() {
+        this.$axios.post('/logout')
+            .then(res => {
+                this.$router.push('/login')
+            })
+            .catch(err => {
+                console.error(err.toString())
+            })
+        }
   }
 };
 </script>
