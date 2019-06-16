@@ -3,6 +3,7 @@ import Router from "vue-router";
 import AppHeader from "./layout/AppHeader";
 import AppFooter from "./layout/AppFooter";
 import Components from "./views/Components.vue";
+import Search from "./views/Search.vue";
 import News from "./views/News.vue";
 import NewsPage from "./views/NewsPage.vue";
 import Landing from "./views/Landing.vue";
@@ -43,7 +44,16 @@ export default new Router({
       }
     },
     {
-      path: "/profile",
+      path: "/search",
+      name: "search",
+      components: {
+        header: AppHeader,
+        default: Search,
+        footer: AppFooter
+      }
+    },
+    {
+      path: "/imenik/:id",
       name: "profile",
       components: {
         header: AppHeader,

@@ -5,7 +5,7 @@
                 <img src="img/brand/bih-logo-png-transparent.png" alt="logo">
             </router-link>
             <div class="nav-item">
-                <router-link to="/profile" class="nav-link" style="color: white !important;">Spisak notara</router-link>
+                <router-link to="/search" class="nav-link" style="color: white !important;">Spisak notara</router-link>
             </div>
             <div class="nav-item">
                 <router-link to="/news" class="nav-link" style="color: white !important;">Vijesti</router-link>
