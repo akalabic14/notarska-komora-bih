@@ -2,12 +2,16 @@ import Vue from "vue";
 import Router from "vue-router";
 import AppHeader from "./layout/AppHeader";
 import AppFooter from "./layout/AppFooter";
+import DashHeader from "./layout/DashHeader";
 import Components from "./views/Components.vue";
 import Search from "./views/Search.vue";
 import News from "./views/News.vue";
+import AddNews from "./views/AddNews.vue";
 import NewsPage from "./views/NewsPage.vue";
 import Landing from "./views/Landing.vue";
 import Login from "./views/Login.vue";
+import User from "./views/User.vue";
+import UsersTable from "./views/UsersTable.vue";
 import Contact from "./views/Contact.vue";
 import Profile from "./views/Profile.vue";
 
@@ -76,6 +80,42 @@ export default new Router({
       components: {
         header: AppHeader,
         default: NewsPage,
+        footer: AppFooter
+      }
+    },
+    {
+      path: "/dashboard",
+      name: "dashboard",
+      components: {
+        header: DashHeader,
+        default: Components,
+        footer: AppFooter
+      }
+    },
+    {
+      path: "/user",
+      name: "user",
+      components: {
+        header: DashHeader,
+        default: User,
+        footer: AppFooter
+      }
+    },
+    {
+      path: "/users",
+      name: "users",
+      components: {
+        header: DashHeader,
+        default: UsersTable,
+        footer: AppFooter
+      }
+    },
+    {
+      path: "/add-news",
+      name: "user",
+      components: {
+        header: DashHeader,
+        default: AddNews,
         footer: AppFooter
       }
     }

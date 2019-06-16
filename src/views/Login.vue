@@ -15,6 +15,8 @@
                 <div class="col-lg-5">
                     <card gradient="secondary" shadow body-classes="p-lg-5">
                         <h4 class="mb-1">Uloguj se</h4>
+                        <br>
+                        <br>
                         <base-input alternative
                                     class="mb-3"
                                     placeholder="Email"
