@@ -1,9 +1,6 @@
 <template>
     <header class="header-global">
         <base-nav class="navbar-main" transparent type="" effect="light" expand>
-            <router-link slot="brand" class="navbar-brand mr-lg-5" to="/">
-                <img src="img/brand/bih-logo-png-transparent.png" alt="logo">
-            </router-link>
             <div class="nav-item">
                 <router-link to="/user" class="nav-link" style="color: white !important;">Moji podaci</router-link>
             </div>

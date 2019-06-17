@@ -84,16 +84,6 @@ export default new Router({
       }
     },
     {
-      path: "/dashboard",
-      name: "dashboard",
-      components: {
-        header: DashHeader,
-        default: Components,
-        footer: AppFooter
-      },
-      meta: { requiresAuth: true }
-    },
-    {
       path: "/user",
       name: "user",
       components: {

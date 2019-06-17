@@ -71,7 +71,7 @@ export default {
                 if (res.data.error) {
                     this.pokaziError (res.data.error)
                 } else {
-                    this.$router.push('/dashboard')
+                    this.$router.push('/user')
                 }
             })
             .catch(err => {
