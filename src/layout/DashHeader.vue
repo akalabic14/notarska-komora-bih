@@ -7,11 +7,11 @@
             <div class="nav-item">
                 <router-link to="/user" class="nav-link" style="color: white !important;">Moji podaci</router-link>
             </div>
-            <div class="nav-item">
+            <div class="nav-item" v-if="$user.is_admin || $user.is_writer">
                 <router-link to="/add-news" class="nav-link" style="color: white !important;">Dodaj vijest</router-link>
             </div>
-            <div class="nav-item">
-                <router-link to="/users" class="nav-link" style="color: white !important;">Users</router-link>
+            <div class="nav-item" v-if="$user.is_admin">
+                <router-link to="/users" class="nav-link" style="color: white !important;">Korisnici</router-link>
             </div>
             <ul class="navbar-nav align-items-lg-center ml-lg-auto">
                 <li class="nav-item d-none d-lg-block ml-lg-4">

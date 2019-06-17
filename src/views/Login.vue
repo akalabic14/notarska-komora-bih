@@ -22,7 +22,7 @@
                         <br>
                         <base-input alternative
                                     class="mb-3"
-                                    placeholder="Email"
+                                    placeholder="Korisničko ime"
                                     addon-left-icon="ni ni-email-83"
                                     v-model="username">
                         </base-input>

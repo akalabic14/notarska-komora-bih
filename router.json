@@ -15,6 +15,18 @@
             "method": "post",
             "controller": "get-user.js",
             "requires_auth": "true"
+        },
+        {
+            "path": "/user-actions/:method",
+            "method": "post",
+            "controller": "user-actions.js",
+            "requires_auth": "true"
+        },
+        {
+            "path": "/news-actions/:method",
+            "method": "post",
+            "controller": "news-actions.js",
+            "requires_auth": "true"
         }
     ]
 }

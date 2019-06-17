@@ -5,4 +5,4 @@ const clanak = new Schema({
     tijelo: String,
 });
 
-module.exports = model('Clanak', korisnik);
+module.exports = model('Clanak', clanak);

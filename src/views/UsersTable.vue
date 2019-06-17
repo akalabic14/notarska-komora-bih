@@ -1,5 +1,8 @@
 <template>
     <section class="section-hero section-shaped my-0">
+        <base-alert type="danger" icon="ni ni-support-16" dismissible :visible="error.show">
+            <span slot="text"><strong>Greška!</strong> {{error.message}}!</span>
+        </base-alert>
         <div class="shape shape-style-1 shape-primary">
             <span class="span-150"></span>
             <span class="span-50"></span>
@@ -53,20 +56,13 @@
                         :sort-direction="sortDirection"
                         @filtered="onFiltered"
                         >
-                        <template slot="name" slot-scope="row">
-                            {{ row.value.first }} {{ row.value.last }}
-                        </template>
-
-                        <template slot="isActive" slot-scope="row">
-                            {{ row.value }}
-                        </template>
 
                         <template slot="actions" slot-scope="row">
                             <b-button size="sm" @click="info(row.item, row.index, $event.target)" class="mr-1">
-                            Izmjeni
+                              Izmjeni
                             </b-button>
-                            <b-button size="sm" @click="row.toggleDetails">
-                            Izbrisi
+                            <b-button size="sm" @click="izbrisi(row.item)">
+                              Izbrisi
                             </b-button>
                         </template>
                         </b-table>
@@ -81,11 +77,54 @@
                             ></b-pagination>
                         </b-col>
                         </b-row>
-
                         <!-- Info modal -->
-                        <b-modal :id="infoModal.id" :title="infoModal.title" ok-only @hide="resetInfoModal">
-                        <pre>{{ infoModal.content }}</pre>
+                        <b-modal id="info-modal" :title="infoModal.title" ok-title="Sačuvaj" cancel-title="Otkaži" @cancel="resetInfoModal" @ok="modalAction">
+                          <base-checkbox 
+                            class="mb-3" 
+                            v-model="infoModal.is_admin">
+                            Administrator
+                          </base-checkbox>
+                          <base-checkbox 
+                            class="mb-3" 
+                            v-model="infoModal.is_writer">
+                            Urednik
+                          </base-checkbox>
+                          <base-input alternative
+                                      class="mb-3"
+                                      placeholder="Korisničko ime"
+                                      addon-left-icon="ni ni-email-83"
+                                      v-model="infoModal.username">
+                          </base-input>
+                          <base-input alternative
+                                      type="password"
+                                      placeholder="Šifra"
+                                      addon-left-icon="ni ni-lock-circle-open"
+                                      v-model="infoModal.password">
+                          </base-input>
+                          <base-input alternative
+                                      type="text"
+                                      placeholder="Kanton"
+                                      addon-left-icon="ni ni-lock-circle-open"
+                                      v-model="infoModal.region">
+                          </base-input>
+                          <base-input alternative
+                                      type="text"
+                                      placeholder="Grad"
+                                      addon-left-icon="ni ni-lock-circle-open"
+                                      v-model="infoModal.city">
+                          </base-input>
+                          <base-input class="mb-4">
+                                  <textarea class="form-control form-control-alternative" name="name" rows="4"
+                                              cols="80" placeholder="Unesite svoju adresu..." v-model="infoModal.address"></textarea>
+                          </base-input>
                         </b-modal>
+                        <b-row>
+                          <b-col md="6" class="my-1">
+                            <b-button size="sm" @click="createModal">
+                              Dodaj novog user-a
+                            </b-button>
+                          </b-col>
+                        <b-row>
                     </card>
                 </div>
             </div>
@@ -98,35 +137,20 @@
     data() {
       return {
         items: [
-          { isActive: true, age: 40, name: { first: 'Dickerson', last: 'Macdonald' } },
-          { isActive: false, age: 21, name: { first: 'Larsen', last: 'Shaw' } },
-          {
-            isActive: false,
-            age: 9,
-            name: { first: 'Mini', last: 'Navarro' },
-            _rowVariant: 'success'
-          },
-          { isActive: false, age: 89, name: { first: 'Geneva', last: 'Wilson' } },
-          { isActive: true, age: 38, name: { first: 'Jami', last: 'Carney' } },
-          { isActive: false, age: 27, name: { first: 'Essie', last: 'Dunlap' } },
-          { isActive: true, age: 40, name: { first: 'Thor', last: 'Macdonald' } },
-          {
-            isActive: true,
-            age: 87,
-            name: { first: 'Larsen', last: 'Shaw' },
-            _cellVariants: { age: 'danger', isActive: 'warning' }
-          },
-          { isActive: false, age: 26, name: { first: 'Mitzi', last: 'Navarro' } },
-          { isActive: false, age: 22, name: { first: 'Genevieve', last: 'Wilson' } },
-          { isActive: true, age: 38, name: { first: 'John', last: 'Carney' } },
-          { isActive: false, age: 29, name: { first: 'Dick', last: 'Dunlap' } }
         ],
         fields: [
-          { key: 'name', label: 'Person Full name', sortable: true, sortDirection: 'desc' },
-          { key: 'age', label: 'Person age', sortable: true, class: 'text-center' },
-          { key: 'isActive', label: 'is Active' },
-          { key: 'actions', label: 'Actions' }
+          { key: 'username', label: 'Korisničko ime', sortable: true, sortDirection: 'desc' },
+          { key: 'uloga', label: 'Uloga', sortable: true, class: 'text-center' },
+          { key: 'actions', label: 'Akcije' }
         ],
+        error: {
+            show: false,
+            message: ''
+        },
+        defaultError: {
+            show: false,
+            message: ''
+        },
         totalRows: 1,
         currentPage: 1,
         perPage: 5,
@@ -135,10 +159,30 @@
         sortDesc: false,
         sortDirection: 'asc',
         filter: null,
+        modal_index: null,
         infoModal: {
           id: 'info-modal',
           title: '',
-          content: ''
+          content: '',
+          username:  '',
+          password: '',
+          address:   '',
+          city: '',
+          region: '',
+          is_admin: false,
+          is_writer: false
+        },
+        defaultModal: {
+          id: 'info-modal',
+          title: '',
+          content: '',
+          username:  '',
+          password: '',
+          address:   '',
+          city: '',
+          region: '',
+          is_admin: false,
+          is_writer: false
         }
       }
     },
@@ -154,22 +198,112 @@
     },
     mounted() {
       // Set the initial number of items
-      this.totalRows = this.items.length
+      this.$axios.post('/user-actions/get')
+      .then(res => {
+        if (res.data.error) {
+          this.pokaziError(res.data.error);
+        } else {
+          this.items = res.data
+          this.totalRows = this.items.length
+        }
+      })
+      .catch(err => {
+        this.pokaziError(err.toString());
+      })
     },
     methods: {
       info(item, index, button) {
-        this.infoModal.title = `Row index: ${index}`
-        this.infoModal.content = JSON.stringify(item, null, 2)
-        this.$root.$emit('bv::show::modal', this.infoModal.id, button)
+        this.infoModal = Object.assign(item, {
+          password: '',
+          title: 'Promjeni podatke korisnika'
+        })
+        this.modal_index = this.items.indexOf(item);
+        this.$root.$emit('bv::show::modal', 'info-modal', button)
+      },
+      createModal() {
+        this.infoModal = Object.assign({},this.defaultModal);
+        this.infoModal.title = 'Kreiraj novog korisnika';
+        this.$root.$emit('bv::show::modal', 'info-modal');
+      },
+      pokaziError (message) {
+        this.error.message = message;
+        this.error.show = true;
+        setTimeout(() => {
+            this.error = Object.assign({}, this.defaultError)
+        }, 3000)
       },
       resetInfoModal() {
-        this.infoModal.title = ''
-        this.infoModal.content = ''
+        this.infoModal = Object.assign({}, this.defaultModal)
       },
       onFiltered(filteredItems) {
         // Trigger pagination to update the number of buttons/pages due to filtering
         this.totalRows = filteredItems.length
         this.currentPage = 1
+      },
+      modalAction() {
+        if (this.infoModal._id) {
+          var user_data = {
+            id: this.infoModal._id,
+            username: this.infoModal.username,
+            password: this.infoModal.password != '' ? this.infoModal.password : null,
+            address: this.infoModal.address,
+            city: this.infoModal.city,
+            region: this.infoModal.region,
+            is_admin: this.infoModal.is_admin,
+            is_writer: this.infoModal.is_writer
+          };
+          if (!user_data.password) {
+            delete user_data.password
+          }
+          this.$axios.post('/user-actions/update', user_data)
+          .then(res => {
+            if (res.data.error) {
+              this.pokaziError(res.data.error);
+            } else {
+              this.items.splice(this.modal_index, 1, res.data);
+              this.modal_index = null;
+            }
+          })
+          .catch(err => {
+            this.pokaziError(err.toString());
+          })
+        } else {
+          this.$axios.post('/user-actions/create', {
+            username: this.infoModal.username,
+            password: this.infoModal.password,
+            address: this.infoModal.address,
+            city: this.infoModal.city,
+            region: this.infoModal.region,
+            is_admin: this.infoModal.is_admin,
+            is_writer: this.infoModal.is_writer
+          })
+          .then(res => {
+            if (res.data.error) {
+              this.pokaziError(res.data.error);
+            } else {
+              this.items.push(res.data);
+              this.modal_index = null;
+            }
+          })
+          .catch(err => {
+            this.pokaziError(err.toString());
+          })
+        }
+      },
+      izbrisi (item) {
+        this.$axios.post('/user-actions/delete', {
+            id: item._id
+          })
+          .then(res => {
+            if (res.data.error) {
+              this.pokaziError(res.data.error);
+            } else {
+              this.items.splice(this.modal_index, 1);
+            }
+          })
+          .catch(err => {
+            this.pokaziError(err.toString());
+          })
       }
     }
   }

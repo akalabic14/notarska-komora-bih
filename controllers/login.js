@@ -6,8 +6,9 @@ const User = require('../models/korisnik');
 module.exports = (req, res) => {
     req.body = JSON.parse(req.body)
 
-    User.findOne({email: req.body.email})
+    User.findOne({username: req.body.username})
     .then(user => {
+        console.log(user);
         if (!user) {
             console.error(`User not found`);
             res.json({error: "User not found"})

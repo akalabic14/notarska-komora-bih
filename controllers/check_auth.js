@@ -16,7 +16,7 @@ module.exports = (req, res, next) => {
                 throw new Error('User not found');
             }
             req.user = result;
-            console.log(`CTRL:ip:${ip} user:${(req.user ? req.user.email : 'guest')} path:${req.path} query:${JSON.stringify(req.query)} params:${JSON.stringify(req.params)} body:${JSON.stringify(req.body)} requestId:${req.req_id}`);
+            console.log(`CTRL:ip:${ip} user:${(req.user ? req.user.username : 'guest')} path:${req.path} query:${JSON.stringify(req.query)} params:${JSON.stringify(req.params)} body:${JSON.stringify(req.body)} requestId:${req.req_id}`);
             next();
         })
         .catch(e => {
