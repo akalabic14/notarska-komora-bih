@@ -14,7 +14,7 @@ module.exports = (req, res) => {
         Users.find({
             is_admin: false,
             is_writer: false
-        })
+        }).limit(4)
         .then(r => {
             res.json(r)
         })

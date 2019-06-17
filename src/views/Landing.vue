@@ -73,57 +73,20 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-6 col-lg-3 mb-5 mb-lg-0">
-                        <div class="px-4">
-                            <img v-lazy="'img/theme/team-1-800x800.jpg'"
-                                 class="rounded-circle img-center img-fluid shadow shadow-lg--hover"
-                                 style="width: 200px;">
-                            <div class="pt-4 text-center">
-                                <h5 class="title">
-                                    <span class="d-block mb-1">Selvedin Ahmetašević</span>
-                                    <small class="h6 text-muted">Velika Kladuša</small>
-                                </h5>
+                    <div class="col-md-6 col-lg-3 mb-5 mb-lg-0" v-for="(notar, index) in notari" :key="index">
+                        <router-link :to="`/imenik/${notar._id}`">
+                            <div class="px-4">
+                                <img v-lazy="`img/theme/team-${index + 1}-800x800.jpg`"
+                                    class="rounded-circle img-center img-fluid shadow shadow-lg--hover"
+                                    style="width: 200px;">
+                                <div class="pt-4 text-center">
+                                    <h5 class="title">
+                                        <span class="d-block mb-1">{{notar.name}}</span>
+                                        <small class="h6 text-muted">{{notar.city}}</small>
+                                    </h5>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-3 mb-5 mb-lg-0">
-                        <div class="px-4">
-                            <img v-lazy="'img/theme/team-2-800x800.jpg'"
-                                 class="rounded-circle img-center img-fluid shadow shadow-lg--hover"
-                                 style="width: 200px;">
-                            <div class="pt-4 text-center">
-                                <h5 class="title">
-                                    <span class="d-block mb-1">Vesna Andrijanić</span>
-                                    <small class="h6 text-muted">Visoko</small>
-                                </h5>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-3 mb-5 mb-lg-0">
-                        <div class="px-4">
-                            <img v-lazy="'img/theme/team-3-800x800.jpg'"
-                                 class="rounded-circle img-center img-fluid shadow shadow-lg--hover"
-                                 style="width: 200px;">
-                            <div class="pt-4 text-center">
-                                <h5 class="title">
-                                    <span class="d-block mb-1">Emira Babić</span>
-                                    <small class="h6 text-muted">Kakanj</small>
-                                </h5>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-3 mb-5 mb-lg-0">
-                        <div class="px-4">
-                            <img v-lazy="'img/theme/team-4-800x800.jpg'"
-                                 class="rounded-circle img-center img-fluid shadow shadow-lg--hover"
-                                 style="width: 200px;">
-                            <div class="pt-4 text-center">
-                                <h5 class="title">
-                                    <span class="d-block mb-1">Zdravka Bago</span>
-                                    <small class="h6 text-muted">Sarajevo</small>
-                                </h5>
-                            </div>
-                        </div>
+                        </router-link>
                     </div>
                 </div>
             </div>
@@ -161,6 +124,17 @@ export default {
   name: "home",
   components: {
       Hero
-  }
+  },
+  data() {
+      return {
+          notari: []
+      }
+  },
+  mounted() {
+        this.$axios.post(`/get-all-notars?limit=true`)
+        .then(res => {
+            this.notari = res.data;
+        })
+    }
 };
 </script>
