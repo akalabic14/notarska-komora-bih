@@ -23,14 +23,15 @@
                         <br>
                         <br>
                         <base-input 
-                                    class="mb-4"
-                                    placeholder="Unesite naslov"
-                                    label="Naslov vijesti">
-                                <input type="text" class="form-control form-control-alternative" placeholder="Unesite naslov"></input>
+                            class="mb-4"
+                            placeholder="Unesite naslov"
+                            label="Naslov vijesti"
+                            >
+                            <input type="text" class="form-control form-control-alternative" placeholder="Unesite naslov" v-model="news.naslov"></input>
                         </base-input>
                         <base-input class="mb-4" label="Text vijesti">
                                 <textarea class="form-control form-control-alternative" name="name" rows="12"
-                                            cols="80" placeholder="Unesite text vijesti..."></textarea>
+                                            cols="80" placeholder="Unesite tijelo vijesti..." v-model="news.tijelo"></textarea>
                         </base-input>
                         <base-button type="default" round block size="lg" @click="dodaj">
                             Snimi vijest

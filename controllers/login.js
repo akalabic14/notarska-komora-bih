@@ -8,7 +8,6 @@ module.exports = (req, res) => {
 
     User.findOne({username: req.body.username})
     .then(user => {
-        console.log(user);
         if (!user) {
             console.error(`User not found`);
             res.json({error: "User not found"})

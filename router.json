@@ -17,6 +17,11 @@
             "requires_auth": "true"
         },
         {
+            "path": "/get-news",
+            "method": "post",
+            "controller": "get-news.js"
+        },
+        {
             "path": "/user-actions/:method",
             "method": "post",
             "controller": "user-actions.js",

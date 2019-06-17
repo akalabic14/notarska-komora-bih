@@ -11,7 +11,6 @@ module.exports = (req, res) => {
                 res.json(r.map(user => {
                     var novi =  Object.assign({}, user._doc);
                     novi.uloga = user.is_admin ? 'Administrator' : (user.is_writer ? 'Urednik' : 'Notar');
-                    console.log(novi);
                     return novi;
                 }))
             })

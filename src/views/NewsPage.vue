@@ -19,12 +19,9 @@
                             </h3>
                         </div>
                         <div class="mt-5 py-5 border-top text-center">
-                            <div class="row justify-content-center">
-                                <img v-lazy="news.slika" class="rounded shadow-lg" style="max-width: 300px;">
-                            </div>
                             <div class="row justify-content-center py-3">
                                 <div class="col-lg-9">
-                                    <p class="lead">{{news.text}}</p>
+                                    <p class="lead">{{news.tijelo}}</p>
                                 </div>
                             </div>
                         </div>
@@ -39,36 +36,16 @@ export default {
     data() {
         return {
             news: {
-                naslov: 'List-based media object',
-                text: `Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin.
-                    Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc
-                    ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin.
-                    Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc
-                    ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-                    Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin.
-                    Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc
-                    ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-                    Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin.
-                    Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc
-                    ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-                    Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin.
-                    Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc
-                    ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-                    Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin.
-                    Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc
-                    ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-                    Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin.
-                    Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc
-                    ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-                    Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin.
-                    Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc
-                    ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-                    Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin.
-                    Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc
-                    ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.`,
-                slika: 'img/theme/team-4-800x800.jpg'
+                naslov: '',
+                tijelo: ``
             }
         }
+    },
+    mounted() {
+        this.$axios.post(`/get-news?id=${this.$route.params.id}`)
+        .then(res => {
+            this.news = res.data;
+        })
     },
 };
 </script>
