@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt')
 
 const korisnik = new Schema({
     username:  String,
+    name: String,
     password: String,
     address:   String,
     city: String,

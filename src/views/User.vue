@@ -29,6 +29,12 @@
                                     v-model="user.username">
                         </base-input>
                         <base-input alternative
+                                    class="mb-3"
+                                    placeholder="Ime i prezime"
+                                    addon-left-icon="ni ni-email-83"
+                                    v-model="user.name">
+                        </base-input>
+                        <base-input alternative
                                     type="password"
                                     placeholder="Šifra"
                                     addon-left-icon="ni ni-lock-circle-open"

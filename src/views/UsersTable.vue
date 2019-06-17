@@ -103,6 +103,12 @@
                           </base-input>
                           <base-input alternative
                                       type="text"
+                                      placeholder="Ime i prezime"
+                                      addon-left-icon="ni ni-lock-circle-open"
+                                      v-model="infoModal.name">
+                          </base-input>
+                          <base-input alternative
+                                      type="text"
                                       placeholder="Kanton"
                                       addon-left-icon="ni ni-lock-circle-open"
                                       v-model="infoModal.region">
@@ -140,6 +146,7 @@
         ],
         fields: [
           { key: 'username', label: 'Korisničko ime', sortable: true, sortDirection: 'desc' },
+          { key: 'name', label: 'Ime', sortable: true, class: 'text-center' },
           { key: 'uloga', label: 'Uloga', sortable: true, class: 'text-center' },
           { key: 'actions', label: 'Akcije' }
         ],
@@ -167,6 +174,7 @@
           username:  '',
           password: '',
           address:   '',
+          name: '',
           city: '',
           region: '',
           is_admin: false,
@@ -177,6 +185,7 @@
           title: '',
           content: '',
           username:  '',
+          name: '',
           password: '',
           address:   '',
           city: '',
@@ -245,12 +254,13 @@
           var user_data = {
             id: this.infoModal._id,
             username: this.infoModal.username,
+            name: this.infoModal.name,
             password: this.infoModal.password != '' ? this.infoModal.password : null,
             address: this.infoModal.address,
             city: this.infoModal.city,
             region: this.infoModal.region,
-            is_admin: this.infoModal.is_admin,
-            is_writer: this.infoModal.is_writer
+            is_admin: this.infoModal.is_admin || false,
+            is_writer: this.infoModal.is_writer || false
           };
           if (!user_data.password) {
             delete user_data.password
@@ -271,11 +281,12 @@
           this.$axios.post('/user-actions/create', {
             username: this.infoModal.username,
             password: this.infoModal.password,
+            name: this.infoModal.name,
             address: this.infoModal.address,
             city: this.infoModal.city,
             region: this.infoModal.region,
-            is_admin: this.infoModal.is_admin,
-            is_writer: this.infoModal.is_writer
+            is_admin: this.infoModal.is_admin || false,
+            is_writer: this.infoModal.is_writer || false
           })
           .then(res => {
             if (res.data.error) {

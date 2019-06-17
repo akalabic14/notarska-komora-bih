@@ -24,28 +24,28 @@
                                     <card shadow>
                                         <tab-pane title="Po imenu">
                                             <label for="input-ime">Ime notara</label>
-                                            <b-form-input list="imena-list" id="input-ime" placeholder="Unesite ime"></b-form-input>
+                                            <b-form-input list="imena-list" id="input-ime" placeholder="Unesite ime" v-model="izabrano_ime"></b-form-input>
                                             <b-form-datalist id="imena-list" :options="imena"></b-form-datalist>
                                             <br>
-                                            <base-button type="neutral" round block @click="prikazi_rez=true">
+                                            <base-button type="neutral" round block @click="filtriraj_po('ime')">
                                                 Nadji Notara
                                             </base-button>
                                         </tab-pane>
                                         <tab-pane title="Po gradu">
                                             <label for="input-grad">Pretrazite po gradu</label>
-                                            <b-form-input list="gradovi-list" id="input-grad" placeholder="Unesite grad"></b-form-input>
+                                            <b-form-input list="gradovi-list" id="input-grad" v-model="izabrani_grad" placeholder="Unesite grad"></b-form-input>
                                             <b-form-datalist id="gradovi-list" :options="gradovi"></b-form-datalist>
                                             <br>
-                                            <base-button type="neutral" round block @click="prikazi_rez=true">
+                                            <base-button type="neutral" round block @click="filtriraj_po('grad')">
                                                 Nadji Notara
                                             </base-button>
                                         </tab-pane>
                                         <tab-pane title="Po kantonu/regiji">
                                             <label for="input-regija">Pretrazite po kantonu/regiji</label>
-                                            <b-form-input list="input-list" id="input-regija" placeholder="Unesite kanton/regiju"></b-form-input>
+                                            <b-form-input list="input-list" id="input-regija" v-model="izabrana_regija" placeholder="Unesite kanton/regiju"></b-form-input>
                                             <b-form-datalist id="input-list" :options="regije"></b-form-datalist>
                                             <br>
-                                            <base-button type="neutral" round block @click="prikazi_rez=true">
+                                            <base-button type="neutral" round block @click="filtriraj_po('kanton')">
                                                 Nadji Notara
                                             </base-button>
                                         </tab-pane>
@@ -54,13 +54,13 @@
                             </div>
                         </div>
                         <div class="mt-5 py-5 border-top text-center">
-                            <div class="row justify-content-center" v-for="(notar, index) in notari" :key="index" v-if="prikazi_rez">
+                            <div class="row justify-content-center" v-for="(notar, index) in filtrirani_notari" :key="index">
                                 <div class="col-lg-4 col-sm-6">
-                                    <router-link :to="`/imenik/${index}`">
-                                        <b-card no-body class="overflow-hidden" style="max-width: 300px;" :img-src="notar.slika">
-                                            <b-card-body :title="notar.ime">
+                                    <router-link :to="`/imenik/${notar._id}`">
+                                        <b-card no-body class="overflow-hidden" style="max-width: 300px;">
+                                            <b-card-body :title="notar.name">
                                                 <b-card-text>
-                                                    {{notar.grad}}
+                                                    {{notar.city}}
                                                 </b-card-text>
                                             </b-card-body>
                                         </b-card>
@@ -81,27 +81,43 @@ import TabPane from "@/components/Tabs/TabPane.vue";
 export default {
     data() {
         return {
-            prikazi_rez: false,
-            imena: ['jedno', 'drugo'],
-            gradovi: ['grad', 'selo', 'opstina'],
-            regije: ['velika', 'mala', 'vazna', 'nevazna'],
-            notari: [{
-                ime: 'Selvedin Ahmetašević',
-                grad: 'Velika Kladuša',
-                slika: 'img/theme/team-1-800x800.jpg'
-            },{
-                ime: 'Vesna Andrijanić',
-                grad: 'Visoko',
-                slika: 'img/theme/team-2-800x800.jpg'
-            },{
-                ime: 'Emira Babić',
-                grad: 'Kakanj',
-                slika: 'img/theme/team-3-800x800.jpg'
-            }]
+            izabrana_regija: '',
+            filtrirani_notari: [],
+            izabrani_grad: '',
+            izabrano_ime: '',
+            imena: [],
+            gradovi: [],
+            regije: [],
+            notari: []
         }
     },
     components: {
         TabPane, Tabs
+    },
+    mounted() {
+        this.$axios.post('/get-all-notars')
+        .then(res => {
+            this.notari = res.data.notari;
+            this.regije = res.data.kantoni;
+            this.gradovi = res.data.gradovi;
+            this.imena = res.data.imena;
+            this.filtrirani_notari = res.data.notari;
+        })
+    },
+    methods: {
+        filtriraj_po(filter) {
+            switch(filter) {
+                case 'ime':
+                    this.filtrirani_notari = this.notari.filter(notar => notar.name.includes(this.izabrano_ime));
+                    break;
+                case 'kanton':
+                    this.filtrirani_notari = this.notari.filter(notar => notar.region.includes(this.izabrana_regija));
+                    break;
+                case 'grad':
+                    this.filtrirani_notari = this.notari.filter(notar => notar.city.includes(this.izabrani_grad));
+                    break;
+            }
+        }  
     }
 };
 </script>

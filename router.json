@@ -22,6 +22,11 @@
             "controller": "get-news.js"
         },
         {
+            "path": "/get-all-notars",
+            "method": "post",
+            "controller": "get-all-notars.js"
+        },
+        {
             "path": "/user-actions/:method",
             "method": "post",
             "controller": "user-actions.js",
