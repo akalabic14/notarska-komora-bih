@@ -23,7 +23,7 @@ routes.forEach((route) => {
 
 mongoose.connect(`mongodb+srv://web_tehnologije:web_tehnologije@webtehnologije-9u8hn.mongodb.net/test?retryWrites=true&w=majority`, { useNewUrlParser: true })
     .then(() => {
-        app.listen(process.env.PORT || 8090, function () {
+        app.listen(process.env.PORT || 5000, function () {
             console.log(`App started http://127.0.0.1:${process.env.PORT || 8090}`)
         })
     })
